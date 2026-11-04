@@ -1,0 +1,56 @@
+name: Build Walk-Boy V2 Firmware
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'components/retro-go/targets/walkboy/**'
+      - 'launcher/**'
+      - 'retro-core/**'
+      - '.github/workflows/build-walkboy.yml'
+
+jobs:
+  build-walkboy:
+    runs-on: ubuntu-latest
+    container:
+      image: espressif/idf:release-v5.1
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup environment and safe directory
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p output_binaries
+
+      - name: Build Firmware for Benja (ST7789)
+        run: |
+          . /opt/esp/idf/export.sh
+          # Asegurar que el driver esté configurado en ST7789
+          sed -i 's/#define RG_SCREEN_DRIVER.*/#define RG_SCREEN_DRIVER RG_DRIVER_ST7789/' components/retro-go/targets/walkboy/config.h
+          python rg_tool.py --target walkboy build-img
+          cp retro-go_*_walkboy.img output_binaries/walkboy_benja_st7789.img
+          # Copiar binarios individuales de launcher y retro-core
+          mkdir -p output_binaries/benja_individual_bins
+          cp launcher/build/bootloader/bootloader.bin output_binaries/benja_individual_bins/ 2>/dev/null || true
+          cp launcher/build/partition_table/partition-table.bin output_binaries/benja_individual_bins/ 2>/dev/null || true
+          cp launcher/build/launcher.bin output_binaries/benja_individual_bins/ 2>/dev/null || true
+
+      - name: Build Firmware for Andoni (ILI9341)
+        run: |
+          . /opt/esp/idf/export.sh
+          # Cambiar el driver de pantalla a ILI9341
+          sed -i 's/#define RG_SCREEN_DRIVER.*/#define RG_SCREEN_DRIVER RG_DRIVER_ILI9341/' components/retro-go/targets/walkboy/config.h
+          python rg_tool.py --target walkboy build-img
+          cp retro-go_*_walkboy.img output_binaries/walkboy_andoni_ili9341.img
+          mkdir -p output_binaries/andoni_individual_bins
+          cp launcher/build/bootloader/bootloader.bin output_binaries/andoni_individual_bins/ 2>/dev/null || true
+          cp launcher/build/partition_table/partition-table.bin output_binaries/andoni_individual_bins/ 2>/dev/null || true
+          cp launcher/build/launcher.bin output_binaries/andoni_individual_bins/ 2>/dev/null || true
+
+      - name: Upload Binaries and Images
+        uses: actions/upload-artifact@v4
+        with:
+          name: walkboy-v2-binaries
+          path: output_binaries/
