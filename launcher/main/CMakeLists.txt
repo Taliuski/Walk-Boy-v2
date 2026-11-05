@@ -1,6 +1,6 @@
 set(COMPONENT_SRCDIRS ".")
 set(COMPONENT_ADD_INCLUDEDIRS ".")
-set(COMPONENT_REQUIRES "retro-go pn532_i2c")
+set(COMPONENT_REQUIRES "retro-go pn532_i2c esp_http_server json")
 register_component()
 rg_setup_compile_options(-O2 -Wno-error=format -Wno-error=char-subscripts)
 
