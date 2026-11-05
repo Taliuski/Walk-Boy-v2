@@ -59,13 +59,14 @@ else:
     ESPTOOL_PY = "esptool.py"
     PARTTOOL_PY = "parttool.py"
     GEN_ESP32PART_PY = "gen_esp32part.py"
-MKFW_PY = os.path.join("tools", "mkfw.py")
+MKFW_PY = os.path.abspath(os.path.join(os.path.dirname(__file__), "tools", "mkfw.py"))
 
 
 def run(cmd, cwd=None, check=True):
     print(f"Running command: {' '.join(cmd)}")
     if cmd[0].endswith(".py"):
-        return subprocess.run([sys.executable, *cmd], shell=(os.name == 'nt'), cwd=cwd, check=check)
+        target = shutil.which(cmd[0]) or os.path.abspath(cmd[0])
+        return subprocess.run([sys.executable, target, *cmd[1:]], shell=(os.name == 'nt'), cwd=cwd, check=check)
     return subprocess.run(cmd, shell=False, cwd=cwd, check=check)
 
 
