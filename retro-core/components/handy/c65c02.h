@@ -45,6 +45,13 @@
 #ifndef C65C02_H
 #define C65C02_H
 
+#ifdef PS
+#undef PS
+#endif
+#ifdef INTSET
+#undef INTSET
+#endif
+
 //#include <crtdbg.h>
 //#define	TRACE_CPU
 

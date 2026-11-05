@@ -150,6 +150,10 @@ extern UBYTE    *gPrimaryFrameBuffer;
 #define crc32_le(a, b, c) (0)
 #endif
 
+#undef INTSET
+#undef PS
+
+
 //
 // Define the interfaces before we start pulling in the classes
 // as many classes look for articles from the interfaces to

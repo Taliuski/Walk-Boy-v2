@@ -46,6 +46,10 @@
 // Addressing mode decoding
 //
 
+#ifdef PS
+#undef PS
+#endif
+
 #define	xIMMEDIATE()			{mOperand=mPC;mPC++;}
 #define	xABSOLUTE()				{mOperand=CPU_PEEKW(mPC);mPC+=2;}
 #define xZEROPAGE()				{mOperand=CPU_PEEK_RAM(mPC);mPC++;}
