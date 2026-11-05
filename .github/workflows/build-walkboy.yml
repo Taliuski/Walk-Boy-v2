@@ -3,11 +3,8 @@ name: Build Walk-Boy V2 Firmware
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'components/retro-go/targets/walkboy/**'
-      - 'launcher/**'
-      - 'retro-core/**'
-      - '.github/workflows/build-walkboy.yml'
+    branches:
+      - main
 
 jobs:
   build-walkboy:
@@ -40,7 +37,8 @@ jobs:
       - name: Build Firmware for Andoni (ILI9341)
         run: |
           . /opt/esp/idf/export.sh
-          # Cambiar el driver de pantalla a ILI9341
+          rm -f retro-go_*_walkboy.img
+          rm -rf launcher/build/rg_* retro-core/build/rg_* 2>/dev/null || true
           sed -i 's/#define RG_SCREEN_DRIVER.*/#define RG_SCREEN_DRIVER RG_DRIVER_ILI9341/' components/retro-go/targets/walkboy/config.h
           python rg_tool.py --target walkboy build-img
           cp retro-go_*_walkboy.img output_binaries/walkboy_andoni_ili9341.img
