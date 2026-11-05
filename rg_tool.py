@@ -64,8 +64,8 @@ MKFW_PY = os.path.join("tools", "mkfw.py")
 
 def run(cmd, cwd=None, check=True):
     print(f"Running command: {' '.join(cmd)}")
-    if os.name == 'nt' and cmd[0].endswith(".py"):
-        return subprocess.run(["python", *cmd], shell=True, cwd=cwd, check=check)
+    if cmd[0].endswith(".py"):
+        return subprocess.run([sys.executable, *cmd], shell=(os.name == 'nt'), cwd=cwd, check=check)
     return subprocess.run(cmd, shell=False, cwd=cwd, check=check)
 
 

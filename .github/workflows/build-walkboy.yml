@@ -19,6 +19,7 @@ jobs:
       - name: Setup environment and safe directory
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          chmod -R +x tools/
           mkdir -p output_binaries
 
       - name: Build Firmware for Benja (ST7789)
