@@ -1,5 +1,5 @@
-include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 set(EXTRA_COMPONENT_DIRS "${CMAKE_CURRENT_LIST_DIR}/components")
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 macro(rg_setup_compile_options)
     component_compile_options(
