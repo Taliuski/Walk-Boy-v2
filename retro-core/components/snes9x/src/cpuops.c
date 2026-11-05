@@ -13,6 +13,13 @@
 #include "cpuops.h"
 #include "cpumacro.h"
 
+#ifdef BIT16
+#undef BIT16
+#endif
+#ifdef BIT8
+#undef BIT8
+#endif
+
 
 /* ADC */
 static void Op69M1(void)

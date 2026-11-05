@@ -13,6 +13,13 @@
 #include <rg_system.h>
 #endif
 
+#ifdef BIT8
+#undef BIT8
+#endif
+#ifdef BIT16
+#undef BIT16
+#endif
+
 #ifndef INLINE
 #define INLINE inline
 #endif

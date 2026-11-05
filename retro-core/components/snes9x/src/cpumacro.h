@@ -196,6 +196,13 @@ static INLINE void ASL8(void)
    SetZN8(Work8);
 }
 
+#ifdef BIT16
+#undef BIT16
+#endif
+#ifdef BIT8
+#undef BIT8
+#endif
+
 static INLINE void BIT16(void)
 {
    uint16_t Work16 = S9xGetWord(OpAddress);
